@@ -1,0 +1,32 @@
+﻿<Window x:Class="Учёт_книг_в_библиотеке.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Учёт_книг_в_библиотеке"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <ListView ItemsSource="{Binding Suppliers}" SelectedItem="{Binding SelectedSuplier}" Grid.Column="1">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" Command="{Binding Add}"/>
+                    <MenuItem Header="Редоктировать" Command="{Binding Edit}"/>
+                    <MenuItem Header="Удалить" Command="{Binding Remove}"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Title}"/>
+                    <GridViewColumn Header="Жанр" DisplayMemberBinding="{Binding Genre}"/>
+                    <GridViewColumn Header="Дата публикации" DisplayMemberBinding="{Binding YearPublished}"/>
+                    <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding IsAvailable}"/>
+                    <GridViewColumn Header="Имя Автора" DisplayMemberBinding="{Binding FirstName}"/>
+                    <GridViewColumn Header="Фамиля Автора" DisplayMemberBinding="{Binding LastName}"/>
+                    <GridViewColumn Header="Отчество Автора" DisplayMemberBinding="{Binding Patronymic}"/>
+                    <GridViewColumn Header="Дата рождения Автора" DisplayMemberBinding="{Binding Birthday}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
