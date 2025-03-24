@@ -63,7 +63,7 @@ namespace Учёт_книг_в_библиотеке.Model
 
             if (connection.OpenConnection())
             {
-                var command = connection.CreateCommand("SELECT b.`id`, `Title`, `AuthorID`, `Genre`, `IsAvailable`, `YearPublished`, a.`FirstName`, a.`LastName`, a.`Patronymic`, a.`Birthday` FROM Book b JOIN Author a ON b.AuthorId = a.Id");
+                var command = connection.CreateCommand("SELECT b.`Id`, `Title`, `AuthorID`, `Genre`, `IsAvailable`, `YearPublished`, a.`FirstName`, a.`LastName`, a.`Patronymic`, a.`Birthday` FROM Book b JOIN Author a ON b.AuthorId = a.Id");
                 try
                 {
                     MySqlDataReader dr = command.ExecuteReader();
@@ -93,17 +93,17 @@ namespace Учёт_книг_в_библиотеке.Model
                         string ptronymic = string.Empty;
                         if (!dr.IsDBNull(7))
                             ptronymic = dr.GetString("Patronymic");
-                        DateTime birthday = new DateTime();
+                        DateOnly birthday = new DateOnly();
                         if (!dr.IsDBNull(9))
-                            birthday = dr.GetDateTime("Birthday");
+                            birthday = dr.GetDateOnly("Birthday");
 
                         Author author = new Author()
                         {
                             Id = authorID,
                             FirstName = firstName,
-                            Paronymic = ptronymic,
+                            Patronymic = ptronymic,
                             LastName = lastName,
-                            Birtday = birthday
+                            Birthday = birthday
                         };
                         book.Add(new Book
                         {

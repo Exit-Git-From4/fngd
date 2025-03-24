@@ -10,9 +10,9 @@ using Учёт_книг_в_библиотеке.View;
 
 namespace Учёт_книг_в_библиотеке.VMTools
 {
-    internal class MainMvvm : BaseVM
+    internal class AddAuthorMvvm : BaseVM
     {
-        private Book selectedBook;
+        private Author selectedAuthor;
         private ObservableCollection<Book> books = new();
         private ObservableCollection<Author> authors = new();
 
@@ -26,48 +26,47 @@ namespace Учёт_книг_в_библиотеке.VMTools
                 Signal();
             }
         }
-        public Book Selectedook
+        public Author SelectedAuthor
         {
-            get => selectedBook;
+            get => selectedAuthor;
             set
             {
-                selectedBook = value;
+                selectedAuthor = value;
                 Signal();
             }
         }
-        public CommandMvvm UpdateBook { get; set; }
-        public CommandMvvm RemoveBook { get; set; }
+        public CommandMvvm UpdateAuthor { get; set; }
+        public CommandMvvm RemoveAuthor { get; set; }
         public CommandMvvm Add { get; set; }
 
-        public MainMvvm()
+        public AddAuthorMvvm()
         {
             SelectAll();
 
-            UpdateBook = new CommandMvvm(() =>
+            UpdateAuthor = new CommandMvvm(() =>
             {
-                if (DBBook.GetDb().Update(Selectedook))
+                if (DBAuthor.GetDb().Update(SelectedAuthor))
                     MessageBox.Show("Успешно");
-            }, () => Selectedook != null);
+            }, () => SelectedAuthor != null);
 
-            RemoveBook = new CommandMvvm(() =>
+            RemoveAuthor = new CommandMvvm(() =>
             {
-                DBBook.GetDb().Remove(Selectedook);
+                DBAuthor.GetDb().Remove(SelectedAuthor);
                 SelectAll();
-            }, () => Selectedook != null);
+            }, () => SelectedAuthor != null);
 
-            Add = new CommandMvvm(() =>
-            {
-                new WindowAddEditBook().ShowDialog();
-                SelectAll();
-            }, () => true);
+            //Add = new CommandMvvm(() =>
+            //{
+            //    new WindowAddEditBook().ShowDialog();
+            //    SelectAll();
+            //}, () => true);
 
         }
 
         private void SelectAll()
         {
-            Books = new ObservableCollection<Book>(DBBook.GetDb().SelectAll());
+            Authors = new ObservableCollection<Author>(DBAuthor.GetDb().SelectAll());
         }
 
     }
 }
-

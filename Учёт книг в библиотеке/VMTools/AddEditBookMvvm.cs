@@ -10,7 +10,7 @@ using Учёт_книг_в_библиотеке.View;
 
 namespace Учёт_книг_в_библиотеке.VMTools
 {
-    internal class MainMvvm : BaseVM
+    public class AddEditBookMvvm : BaseVM
     {
         private Book selectedBook;
         private ObservableCollection<Book> books = new();
@@ -26,7 +26,7 @@ namespace Учёт_книг_в_библиотеке.VMTools
                 Signal();
             }
         }
-        public Book Selectedook
+        public Book SelectedBook
         {
             get => selectedBook;
             set
@@ -35,32 +35,17 @@ namespace Учёт_книг_в_библиотеке.VMTools
                 Signal();
             }
         }
-        public CommandMvvm UpdateBook { get; set; }
-        public CommandMvvm RemoveBook { get; set; }
-        public CommandMvvm Add { get; set; }
+        public CommandMvvm Save { get; set; }
 
-        public MainMvvm()
+        Action close;
+        public AddEditBookMvvm(Action close)
         {
             SelectAll();
 
-            UpdateBook = new CommandMvvm(() =>
+            Save = new CommandMvvm(() =>
             {
-                if (DBBook.GetDb().Update(Selectedook))
-                    MessageBox.Show("Успешно");
-            }, () => Selectedook != null);
-
-            RemoveBook = new CommandMvvm(() =>
-            {
-                DBBook.GetDb().Remove(Selectedook);
-                SelectAll();
-            }, () => Selectedook != null);
-
-            Add = new CommandMvvm(() =>
-            {
-                new WindowAddEditBook().ShowDialog();
-                SelectAll();
-            }, () => true);
-
+                this.close = close;
+            }, () => SelectedBook != null);
         }
 
         private void SelectAll()
@@ -70,4 +55,3 @@ namespace Учёт_книг_в_библиотеке.VMTools
 
     }
 }
-
