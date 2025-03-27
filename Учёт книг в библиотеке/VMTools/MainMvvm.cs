@@ -45,10 +45,9 @@ namespace Учёт_книг_в_библиотеке.VMTools
 
         public MainMvvm()
         {
-            SelectAll();
-
+            SelectAll(); 
             UpdateBook = new CommandMvvm(() =>
-            {
+            { 
                 Book book = SelectedBook;
                 new WindowAddEditBook(book).ShowDialog();
                 SelectAll();
