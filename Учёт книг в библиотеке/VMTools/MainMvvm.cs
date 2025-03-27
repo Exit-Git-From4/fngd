@@ -16,6 +16,7 @@ namespace Учёт_книг_в_библиотеке.VMTools
         private ObservableCollection<Book> books = new();
         private ObservableCollection<Author> authors = new();
 
+
         private ObservableCollection<Author> Authors { get => authors; set { authors = value; Signal(); } }
         public ObservableCollection<Book> Books
         {
@@ -26,7 +27,7 @@ namespace Учёт_книг_в_библиотеке.VMTools
                 Signal();
             }
         }
-        public Book Selectedook
+        public Book SelectedBook
         {
             get => selectedBook;
             set
@@ -37,7 +38,10 @@ namespace Учёт_книг_в_библиотеке.VMTools
         }
         public CommandMvvm UpdateBook { get; set; }
         public CommandMvvm RemoveBook { get; set; }
-        public CommandMvvm Add { get; set; }
+        public CommandMvvm AddBook { get; set; }
+        public CommandMvvm OpenListAuthor { get; set; }
+        public CommandMvvm fg { get; set; }
+        public CommandMvvm gf { get; set; }
 
         public MainMvvm()
         {
@@ -45,21 +49,30 @@ namespace Учёт_книг_в_библиотеке.VMTools
 
             UpdateBook = new CommandMvvm(() =>
             {
-                if (DBBook.GetDb().Update(Selectedook))
-                    MessageBox.Show("Успешно");
-            }, () => Selectedook != null);
+                Book book = SelectedBook;
+                new WindowAddEditBook(book).ShowDialog();
+                SelectAll();
+            }, () => SelectedBook != null);
 
             RemoveBook = new CommandMvvm(() =>
             {
-                DBBook.GetDb().Remove(Selectedook);
+                DBBook.GetDb().Remove(SelectedBook);
                 SelectAll();
-            }, () => Selectedook != null);
+            }, () => SelectedBook != null);
 
-            Add = new CommandMvvm(() =>
+            AddBook = new CommandMvvm(() =>
             {
-                new WindowAddEditBook().ShowDialog();
+                Book book = new Book();
+                new WindowAddEditBook(book).ShowDialog();
                 SelectAll();
             }, () => true);
+
+            OpenListAuthor = new CommandMvvm(() => 
+            {
+                new WindowListAuthor().ShowDialog();
+                SelectAll();
+            }, () => true);
+
 
         }
 

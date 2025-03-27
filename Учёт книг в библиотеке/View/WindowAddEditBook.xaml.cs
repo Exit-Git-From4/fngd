@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Учёт_книг_в_библиотеке.Model;
+using Учёт_книг_в_библиотеке.VMTools;
 
 namespace Учёт_книг_в_библиотеке.View
 {
@@ -23,7 +24,8 @@ namespace Учёт_книг_в_библиотеке.View
         public WindowAddEditBook(Book book)
         {
             InitializeComponent();
-            DataContext = new WindowAddEditBook(book);
+            DataContext = new AddEditBookMvvm(book);
+            ((AddEditBookMvvm)this.DataContext).SetClose(Close);
         }
     }
 }

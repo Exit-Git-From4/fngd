@@ -11,21 +11,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Учёт_книг_в_библиотеке.Model;
-using Учёт_книг_в_библиотеке.VMTools;
 
 namespace Учёт_книг_в_библиотеке.View
 {
     /// <summary>
-    /// Логика взаимодействия для WindowAddAuthor.xaml
+    /// Логика взаимодействия для WindowListAuthor.xaml
     /// </summary>
-    public partial class WindowAddAuthor : Window
+    public partial class WindowListAuthor : Window
     {
-        public WindowAddAuthor(Author author)
+        public WindowListAuthor()
         {
             InitializeComponent();
-            ((AddAuthorMvvm)this.DataContext).SetAuthor(author);
-            ((AddAuthorMvvm)this.DataContext).SetClose(Close);
         }
     }
 }

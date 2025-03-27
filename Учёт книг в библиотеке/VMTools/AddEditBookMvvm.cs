@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Учёт_книг_в_библиотеке.VMTools
         private ObservableCollection<Book> books = new();
         private ObservableCollection<Author> authors = new();
 
-        private ObservableCollection<Author> Authors { get => authors; set { authors = value; Signal(); } }
+        public ObservableCollection<Author> Authors { get => authors; set { authors = value; Signal(); } }
         public ObservableCollection<Book> Books
         {
             get => books;
@@ -37,21 +38,35 @@ namespace Учёт_книг_в_библиотеке.VMTools
         }
         public CommandMvvm Save { get; set; }
 
-        Action close;
-        public AddEditBookMvvm(Action close)
+        public AddEditBookMvvm(Book book)
         {
+            SelectedBook = book;
             SelectAll();
-
             Save = new CommandMvvm(() =>
             {
-                this.close = close;
-            }, () => SelectedBook != null);
+                SelectedBook.AuthorId = SelectedBook.Author.Id;
+                if (SelectedBook.Id > 0)
+                    DBBook.GetDb().Update(SelectedBook);
+                else
+                    DBBook.GetDb().Insert(SelectedBook);
+                close();
+            }, () => 
+            !string.IsNullOrWhiteSpace(SelectedBook.Title) &&
+            SelectedBook.Author != null &&
+            !string.IsNullOrWhiteSpace(SelectedBook.Genre)
+            );
         }
 
         private void SelectAll()
         {
-            Books = new ObservableCollection<Book>(DBBook.GetDb().SelectAll());
+            Authors = new ObservableCollection<Author>(DBAuthor.GetDb().SelectAll());
+            if (SelectedBook.Author != null)
+                SelectedBook.Author = Authors.FirstOrDefault(s => s.Id == SelectedBook.AuthorId);
         }
-
+        Action close;
+        internal void SetClose(Action close)
+        {
+            this.close = close;
+        }
     }
 }

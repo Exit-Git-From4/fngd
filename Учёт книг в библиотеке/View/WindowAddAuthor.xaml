@@ -4,9 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Учёт_книг_в_библиотеке.View"
+        xmlns:mvvm="clr-namespace:Учёт_книг_в_библиотеке.VMTools"
         mc:Ignorable="d"
+        DataContext="{DynamicResource vm}"
         Title="WindowAddAuthor" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <mvvm:AddAuthorMvvm x:Key="vm" />
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         
+        <StackPanel>
+            <StackPanel.Background>
+                <ImageBrush/>
+            </StackPanel.Background>
+            <TextBlock Text="Имя"/>
+            <TextBox Text="{Binding SelectedAuthor.FirstName}"/>
+            <TextBlock Text="Фамилия"/>
+            <TextBox Text="{Binding SelectedAuthor.LastName}"/>
+            <TextBlock Text="Отчество"/>
+            <TextBox Text="{Binding SelectedAuthor.Patronymic}"/>
+            <TextBlock Text="Дата рождения"/>
+            <DatePicker SelectedDate="{Binding SelectedAuthor.Birthday}"/>
+        </StackPanel>
+        <Button Content="Сохранить" Grid.Row="2" Height="35" Command="{Binding Save}"/>
     </Grid>
 </Window>

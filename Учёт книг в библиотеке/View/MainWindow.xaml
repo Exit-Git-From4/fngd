@@ -9,20 +9,31 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition/>
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBox Text=""/>
-        <ListView ItemsSource="{Binding Books}" SelectedItem="{Binding SelectedBook}" Grid.Column="1" Grid.Row="1">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="по книге"/>
+                <Border BorderBrush="Black" BorderThickness="1" Width="50" Height="27" Margin="200,5,200,0">
+                <TextBlock Text="Поиск" Margin="5" />
+            </Border>
+                <Button Content="по автору"/>
+            </StackPanel>
+            
+            <TextBox Margin="5"/>
+        </StackPanel>
+        <ListView ItemsSource="{Binding Books}" SelectedItem="{Binding SelectedBook}" Grid.Row="1">
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить" Command="{Binding Add}"/>
-                    <MenuItem Header="Редоктировать" Command="{Binding Edit}"/>
-                    <MenuItem Header="Удалить" Command="{Binding Remove}"/>
+                    <MenuItem Header="Добавить" Command="{Binding AddBook}"/>
+                    <MenuItem Header="Редоктировать" Command="{Binding UpdateBook}"/>
+                    <MenuItem Header="Удалить" Command="{Binding RemoveBook}"/>
+                    <MenuItem Header="Открыть список авторов" Command="{Binding OpenListAuthor}"/>
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Title}"/>
+                    <GridViewColumn Header="Назваиние книги" DisplayMemberBinding="{Binding Title}"/>
                     <GridViewColumn Header="Жанр" DisplayMemberBinding="{Binding Genre}"/>
                     <GridViewColumn Header="Дата публикации" DisplayMemberBinding="{Binding YearPublished}"/>
                     <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding IsAvailable}"/>

@@ -13,19 +13,19 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock Text="Название книги"/>
-            <TextBox/>
+            <TextBox Text="{Binding SelectedBook.Title}"/>
             <TextBlock Text="Год публикации"/>
-            <DatePicker/>
+            <TextBox Text="{Binding SelectedBook.YearPublished}"/>
             <TextBlock Text="Жанр"/>
-            <TextBox/>
+            <TextBox Text="{Binding SelectedBook.Genre}"/>
             <TextBlock Text="Автор"/>
-            <ComboBox/>
+            <ComboBox ItemsSource="{Binding Authors}" SelectedItem="{Binding SelectedBook.Author}" DisplayMemberPath="LastName"/>
             <TextBlock Text="доступность"/>
             <StackPanel Orientation="Horizontal">
-                <RadioButton Content="есть"/>
+                <RadioButton Content="есть" IsChecked="{Binding SelectedBook.IsAvailable}"/>
                 <RadioButton Content="не есть"/>
             </StackPanel>
         </StackPanel>
-        <Button Content="Сохранить" Grid.Row="1" Height="35" />
+        <Button Content="Сохранить" Grid.Row="1" Height="35" Command="{Binding Save}"/>
     </Grid>
 </Window>

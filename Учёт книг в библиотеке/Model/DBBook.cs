@@ -26,18 +26,17 @@ namespace Учёт_книг_в_библиотеке.Model
 
             if (connection.OpenConnection())
             {
-                MySqlCommand cmd = connection.CreateCommand("insert into `Book` Values (0, @Title, @AuthorID, @Genre ,@IsAvailable ,@YearPublished);select LAST_INSERT_ID();");
+                MySqlCommand cmd = connection.CreateCommand("insert into `Book` Values (0, @Title, @AuthorId, @YearPublished, @Genre ,@IsAvailable);select LAST_INSERT_ID();");
                 cmd.Parameters.Add(new MySqlParameter("Title", supplier.Title));
-                cmd.Parameters.Add(new MySqlParameter("AuthorID", supplier.AuthorID));
+                cmd.Parameters.Add(new MySqlParameter("AuthorId", supplier.AuthorId));
+                cmd.Parameters.Add(new MySqlParameter("YearPublished", supplier.YearPublished));
                 cmd.Parameters.Add(new MySqlParameter("Genre", supplier.Genre));
                 cmd.Parameters.Add(new MySqlParameter("IsAvailable", supplier.IsAvailable));
-                cmd.Parameters.Add(new MySqlParameter("YearPublished", supplier.YearPublished));
                 try
                 {
                     int id = (int)(ulong)cmd.ExecuteScalar();
                     if (id > 0)
                     {
-                        MessageBox.Show(id.ToString());
                         supplier.Id = id;
                         result = true;
                     }
@@ -63,7 +62,7 @@ namespace Учёт_книг_в_библиотеке.Model
 
             if (connection.OpenConnection())
             {
-                var command = connection.CreateCommand("SELECT b.`Id`, `Title`, `AuthorID`, `Genre`, `IsAvailable`, `YearPublished`, a.`FirstName`, a.`LastName`, a.`Patronymic`, a.`Birthday` FROM Book b JOIN Author a ON b.AuthorId = a.Id");
+                var command = connection.CreateCommand("SELECT b.`Id`, `Title`, `AuthorId`, `Genre`, `IsAvailable`, `YearPublished`, a.`FirstName`, a.`LastName`, a.`Patronymic`, a.`Birthday` FROM Book b JOIN Author a ON b.AuthorId = a.Id");
                 try
                 {
                     MySqlDataReader dr = command.ExecuteReader();
@@ -73,7 +72,7 @@ namespace Учёт_книг_в_библиотеке.Model
                         string title = string.Empty;
                         if (!dr.IsDBNull(1))
                             title = dr.GetString("Title");
-                        int authorID = dr.GetInt32("AuthorID");
+                        int authorID = dr.GetInt32("AuthorId");
                         string genre = string.Empty;
                         if (!dr.IsDBNull(4))
                             genre = dr.GetString("Genre");
@@ -82,8 +81,8 @@ namespace Учёт_книг_в_библиотеке.Model
                             isAvailable = dr.GetBoolean("IsAvailable");
                         int yearPublished = 0;
                         if (!dr.IsDBNull(3))
-
                             yearPublished = dr.GetInt16("YearPublished");
+
                         string firstName = string.Empty;
                         if (!dr.IsDBNull(6))
                             firstName = dr.GetString("FirstName");
@@ -109,7 +108,7 @@ namespace Учёт_книг_в_библиотеке.Model
                         {
                             Id = id,
                             Title = title,
-                            AuthorID = authorID,
+                            AuthorId = authorID,
                             Author = author,
                             Genre = genre,
                             IsAvailable= isAvailable,
@@ -134,9 +133,9 @@ namespace Учёт_книг_в_библиотеке.Model
 
             if (connection.OpenConnection())
             {
-                var mc = connection.CreateCommand($"update `Book` set `Title`=@Title, `AuthorID`=@AuthorID, `Genre`=@Genre, `IsAvailable`=@IsAvailable, `YearPublished`=@YearPublished where `id` = {edit.Id}");
+                var mc = connection.CreateCommand($"update `Book` set `Title`=@Title, `AuthorId`=@AuthorId, `Genre`=@Genre, `IsAvailable`=@IsAvailable, `YearPublished`=@YearPublished where `id` = {edit.Id}");
                 mc.Parameters.Add(new MySqlParameter("Title", edit.Title));
-                mc.Parameters.Add(new MySqlParameter("AuthorID", edit.AuthorID));
+                mc.Parameters.Add(new MySqlParameter("AuthorId", edit.AuthorId));
                 mc.Parameters.Add(new MySqlParameter("Genre", edit.Genre));
                 mc.Parameters.Add(new MySqlParameter("IsAvailable", edit.IsAvailable));
                 mc.Parameters.Add(new MySqlParameter("YearPublished", edit.YearPublished));

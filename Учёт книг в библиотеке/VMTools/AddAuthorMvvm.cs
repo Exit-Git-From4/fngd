@@ -13,19 +13,9 @@ namespace Учёт_книг_в_библиотеке.VMTools
     internal class AddAuthorMvvm : BaseVM
     {
         private Author selectedAuthor;
-        private ObservableCollection<Book> books = new();
         private ObservableCollection<Author> authors = new();
 
-        private ObservableCollection<Author> Authors { get => authors; set { authors = value; Signal(); } }
-        public ObservableCollection<Book> Books
-        {
-            get => books;
-            set
-            {
-                books = value;
-                Signal();
-            }
-        }
+        public ObservableCollection<Author> Authors { get => authors; set { authors = value; Signal(); } }
         public Author SelectedAuthor
         {
             get => selectedAuthor;
@@ -35,38 +25,38 @@ namespace Учёт_книг_в_библиотеке.VMTools
                 Signal();
             }
         }
-        public CommandMvvm UpdateAuthor { get; set; }
-        public CommandMvvm RemoveAuthor { get; set; }
-        public CommandMvvm Add { get; set; }
+        public CommandMvvm Save { get; set; }
 
         public AddAuthorMvvm()
         {
             SelectAll();
-
-            UpdateAuthor = new CommandMvvm(() =>
+            Save = new CommandMvvm(() =>
             {
-                if (DBAuthor.GetDb().Update(SelectedAuthor))
-                    MessageBox.Show("Успешно");
-            }, () => SelectedAuthor != null);
-
-            RemoveAuthor = new CommandMvvm(() =>
-            {
-                DBAuthor.GetDb().Remove(SelectedAuthor);
-                SelectAll();
-            }, () => SelectedAuthor != null);
-
-            //Add = new CommandMvvm(() =>
-            //{
-            //    new WindowAddEditBook().ShowDialog();
-            //    SelectAll();
-            //}, () => true);
-
+                if (SelectedAuthor.Id > 0)
+                    DBAuthor.GetDb().Update(SelectedAuthor);
+                else
+                    DBAuthor.GetDb().Insert(SelectedAuthor);
+                close();
+            }, () =>
+            SelectedAuthor != null &&
+            !string.IsNullOrWhiteSpace(SelectedAuthor.FirstName) &&
+            !string.IsNullOrWhiteSpace(SelectedAuthor.LastName) &&
+            !string.IsNullOrWhiteSpace(SelectedAuthor.Patronymic)
+            );
         }
 
         private void SelectAll()
         {
             Authors = new ObservableCollection<Author>(DBAuthor.GetDb().SelectAll());
         }
-
+        Action close;
+        internal void SetClose(Action close)
+        {
+            this.close = close;
+        }
+        internal void SetAuthor(Author author)
+        {
+            SelectedAuthor = author;
+        }
     }
 }

@@ -35,7 +35,6 @@ namespace Учёт_книг_в_библиотеке.Model
                     int id = (int)(ulong)cmd.ExecuteScalar();
                     if (id > 0)
                     {
-                        MessageBox.Show(id.ToString());
                         author.Id = id;
                         result = true;
                     }
@@ -61,7 +60,7 @@ namespace Учёт_книг_в_библиотеке.Model
 
             if (connection.OpenConnection())
             {
-                var command = connection.CreateCommand("SELECT `Id`, `FirstName`, `LastName`, `Patronymic`, `Birthday`, FROM Author");
+                var command = connection.CreateCommand("SELECT `Id`, `FirstName`, `LastName`, `Patronymic`, `Birthday` FROM Author");
                 try
                 {
                     MySqlDataReader dr = command.ExecuteReader();
