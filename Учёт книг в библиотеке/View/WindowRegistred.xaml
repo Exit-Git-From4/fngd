@@ -21,6 +21,6 @@
             <TextBlock Text="Password:  "/>
             <TextBox Width="100"/>
         </StackPanel>
-        
+         
     </Grid>
 </Window>
