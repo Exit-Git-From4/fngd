@@ -77,9 +77,9 @@ namespace Учёт_книг_в_библиотеке.Model
                         string ptronymic = string.Empty;
                         if (!dr.IsDBNull(3))
                             ptronymic = dr.GetString("Patronymic");
-                        DateOnly birthday = new DateOnly();
+                        DateTime birthday = new DateTime();
                         if (!dr.IsDBNull(4))
-                            birthday = dr.GetDateOnly("Birthday");
+                            birthday = dr.GetDateTime("Birthday");
 
                         author.Add(new Author()
                         {

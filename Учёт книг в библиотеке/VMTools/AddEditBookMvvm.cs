@@ -53,6 +53,7 @@ namespace Учёт_книг_в_библиотеке.VMTools
             }, () => 
             !string.IsNullOrWhiteSpace(SelectedBook.Title) &&
             SelectedBook.Author != null &&
+            SelectedBook.YearPublished <= DateTime.Now.Year &&
             !string.IsNullOrWhiteSpace(SelectedBook.Genre)
             );
         }

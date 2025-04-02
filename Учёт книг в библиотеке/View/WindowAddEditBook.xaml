@@ -13,11 +13,11 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock Text="Название книги"/>
-            <TextBox Text="{Binding SelectedBook.Title}"/>
+            <TextBox Text="{Binding SelectedBook.Title, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Год публикации"/>
-            <TextBox Text="{Binding SelectedBook.YearPublished}"/>
+            <TextBox Text="{Binding SelectedBook.YearPublished, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Жанр"/>
-            <TextBox Text="{Binding SelectedBook.Genre}"/>
+            <TextBox Text="{Binding SelectedBook.Genre, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Автор"/>
             <ComboBox ItemsSource="{Binding Authors}" SelectedItem="{Binding SelectedBook.Author}" DisplayMemberPath="LastName"/>
             <TextBlock Text="доступность"/>

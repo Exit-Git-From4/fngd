@@ -40,7 +40,11 @@ namespace Учёт_книг_в_библиотеке.VMTools
             }, () =>
             SelectedAuthor != null &&
             !string.IsNullOrWhiteSpace(SelectedAuthor.FirstName) &&
+            SelectedAuthor.FirstName.Length <= 255 &&
             !string.IsNullOrWhiteSpace(SelectedAuthor.LastName) &&
+            SelectedAuthor.LastName.Length <= 255 &&
+            SelectedAuthor.Patronymic.Length <= 255 &&
+            SelectedAuthor.Birthday <= DateTime.Now &&
             !string.IsNullOrWhiteSpace(SelectedAuthor.Patronymic)
             );
         }
@@ -57,6 +61,11 @@ namespace Учёт_книг_в_библиотеке.VMTools
         internal void SetAuthor(Author author)
         {
             SelectedAuthor = author;
+            if (SelectedAuthor.Id == 0)
+            {
+                SelectedAuthor.Birthday = DateTime.Now;
+                Signal(nameof(SelectedAuthor));
+            }
         }
     }
 }

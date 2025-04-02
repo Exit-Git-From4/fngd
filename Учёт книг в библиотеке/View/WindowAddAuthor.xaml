@@ -23,11 +23,11 @@
                 <ImageBrush/>
             </StackPanel.Background>
             <TextBlock Text="Имя"/>
-            <TextBox Text="{Binding SelectedAuthor.FirstName}"/>
+            <TextBox Text="{Binding SelectedAuthor.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Фамилия"/>
-            <TextBox Text="{Binding SelectedAuthor.LastName}"/>
+            <TextBox Text="{Binding SelectedAuthor.LastName, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Отчество"/>
-            <TextBox Text="{Binding SelectedAuthor.Patronymic}"/>
+            <TextBox Text="{Binding SelectedAuthor.Patronymic, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Дата рождения"/>
             <DatePicker SelectedDate="{Binding SelectedAuthor.Birthday}"/>
         </StackPanel>

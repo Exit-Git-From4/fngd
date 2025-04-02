@@ -15,6 +15,7 @@ namespace Учёт_книг_в_библиотеке.VMTools
         private Book selectedBook;
         private ObservableCollection<Book> books = new();
         private ObservableCollection<Author> authors = new();
+        private string search;
 
 
         private ObservableCollection<Author> Authors { get => authors; set { authors = value; Signal(); } }
@@ -40,8 +41,16 @@ namespace Учёт_книг_в_библиотеке.VMTools
         public CommandMvvm RemoveBook { get; set; }
         public CommandMvvm AddBook { get; set; }
         public CommandMvvm OpenListAuthor { get; set; }
-        public CommandMvvm fg { get; set; }
-        public CommandMvvm gf { get; set; }
+        public CommandMvvm Update { get; set; }
+        public string Search
+        {
+            get => search;
+            set
+            {
+                search = value;
+                SearchBook(search);
+            }
+        }
 
         public MainMvvm()
         {
@@ -55,7 +64,8 @@ namespace Учёт_книг_в_библиотеке.VMTools
 
             RemoveBook = new CommandMvvm(() =>
             {
-                DBBook.GetDb().Remove(SelectedBook);
+                if(MessageBox.Show("ТОЧНО?????","Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    DBBook.GetDb().Remove(SelectedBook);
                 SelectAll();
             }, () => SelectedBook != null);
 
@@ -72,14 +82,17 @@ namespace Учёт_книг_в_библиотеке.VMTools
                 SelectAll();
             }, () => true);
 
-
+            Update = new CommandMvvm(SelectAll, () => true);
         }
 
         private void SelectAll()
         {
             Books = new ObservableCollection<Book>(DBBook.GetDb().SelectAll());
         }
-
+        private void SearchBook(string search)
+        {
+            Books = new ObservableCollection<Book>(DBBook.GetDb().SearchBook(search));
+        }
     }
 }
 

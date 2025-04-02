@@ -11,17 +11,18 @@
             <RowDefinition Height="auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="по книге"/>
-                <Border BorderBrush="Black" BorderThickness="1" Width="50" Height="27" Margin="200,5,200,0">
-                <TextBlock Text="Поиск" Margin="5" />
-            </Border>
-                <Button Content="по автору"/>
-            </StackPanel>
-            
-            <TextBox Margin="5"/>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Поиск: " Margin="5" FontWeight="Bold" />
+            <TextBox Margin="5" MinWidth="200" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
+        <Button Content="Обновить" Command="{Binding Update}" HorizontalAlignment="Right" Width="100" BorderBrush="White" Foreground="White">
+            <Button.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
         <ListView ItemsSource="{Binding Books}" SelectedItem="{Binding SelectedBook}" Grid.Row="1">
             <ListView.ContextMenu>
                 <ContextMenu>
@@ -40,7 +41,6 @@
                     <GridViewColumn Header="Имя Автора" DisplayMemberBinding="{Binding Author.FirstName}"/>
                     <GridViewColumn Header="Фамиля Автора" DisplayMemberBinding="{Binding Author.LastName}"/>
                     <GridViewColumn Header="Отчество Автора" DisplayMemberBinding="{Binding Author.Patronymic}"/>
-                    <GridViewColumn Header="Дата рождения Автора" DisplayMemberBinding="{Binding Author.Birthday}"/>
                 </GridView>
             </ListView.View>
         </ListView>

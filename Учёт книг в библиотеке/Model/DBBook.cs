@@ -17,6 +17,61 @@ namespace Учёт_книг_в_библиотеке.Model
         {
             this.connection = db;
         }
+        public List<Book> SearchBook(string search)
+        {
+            List<Book> result = new();
+            List<Author> authors = new();
+
+            string query = $"SELECT Book.Id AS 'bookid', Title, YearPublished, Genre, IsAvailable, AuthorId, a.LastName, a.FirstName, a.Patronymic, a.Birthday FROM Book JOIN Author a ON Book.AuthorID = a.Id WHERE Title LIKE @search OR a.LastName LIKE @search";
+
+            if (connection.OpenConnection())
+            {// using уничтожает объект после окончания блока (вызывает Dispose)
+                using (var mc = connection.CreateCommand(query))
+                {
+                    // передача поиска через переменную в запрос
+                    mc.Parameters.Add(new MySqlParameter("search", $"%{search}%"));
+                    using (var dr = mc.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            // создание книги на каждую строку в результате
+                            var book = new Book();
+                            book.Id = dr.GetInt32("bookid");
+                            book.YearPublished = dr.GetInt32("YearPublished");
+                            book.Title = dr.GetString("Title");
+                            book.AuthorId = dr.GetInt32("AuthorID");
+                            book.Genre = dr.GetString("Genre");
+                            book.IsAvailable = dr.GetBoolean("IsAvailable");
+
+                            // поиск объекта-автора в коллекции authors по ID
+                            var author = authors.FirstOrDefault(s => s.Id == book.AuthorId);
+                            if (author == null)
+                            {
+                                // создание автора, если его не было в коллекции
+                                author = new Author();
+                                author.Id = book.AuthorId;
+                                author.FirstName = dr.GetString("FirstName");
+                                author.LastName = dr.GetString("LastName");
+                                author.Patronymic = dr.GetString("Patronymic");
+                                author.Birthday = dr.GetDateTime("Birthday");
+                                // добавление автора в коллекцию
+                                authors.Add(author);
+                            }
+                            // добавление книги автору
+                            //author.Books.Add(book);
+                            // указание книге автора
+                            book.Author = author;
+
+                            // добавление книги в результат запроса
+                            result.Add(book);
+                        }
+                    }
+                }
+                connection.CloseConnection();
+            }
+            return result;
+
+        }
 
         public bool Insert(Book supplier)
         {
@@ -92,9 +147,9 @@ namespace Учёт_книг_в_библиотеке.Model
                         string ptronymic = string.Empty;
                         if (!dr.IsDBNull(7))
                             ptronymic = dr.GetString("Patronymic");
-                        DateOnly birthday = new DateOnly();
+                        DateTime birthday = new DateTime();
                         if (!dr.IsDBNull(9))
-                            birthday = dr.GetDateOnly("Birthday");
+                            birthday = dr.GetDateTime("Birthday");
 
                         Author author = new Author()
                         {
